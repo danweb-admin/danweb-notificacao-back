@@ -24,3 +24,4 @@ logs/
 # Sistema operacional
 .DS_Store
 Thumbs.db
+src/DanWeb.Notificacoes.Api/appsettings.json
