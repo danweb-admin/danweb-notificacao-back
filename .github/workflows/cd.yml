@@ -1,0 +1,53 @@
+
+name: CD - DanWeb Notificacoes
+
+on:
+  push:
+    branches: ["main"]
+
+jobs:
+  build:
+    runs-on: ubuntu-latest
+
+    steps:
+      - uses: actions/checkout@v4
+
+      - name: Setup .NET
+        uses: actions/setup-dotnet@v4
+        with:
+          dotnet-version: 10.0.x
+
+      - name: Restore
+        run: dotnet restore DanWeb.Notificacoes.sln
+
+      - name: Build
+        run: dotnet build DanWeb.Notificacoes.sln -c Release --no-restore
+
+      - name: Test
+        run: dotnet test DanWeb.Notificacoes.sln -c Release --no-build
+
+      - name: Login Docker Hub
+        uses: docker/login-action@v3
+        with:
+          username: williambr2022
+          password: ${{ secrets.DOCKER_PASSWORD }}
+
+      - name: Build and Push API
+        uses: docker/build-push-action@v6
+        with:
+          context: .
+          file: Dockerfile.Api
+          push: true
+          tags: |
+            williambr2022/danweb-notificacoes-api:latest
+            williambr2022/danweb-notificacoes-api:${{ github.sha }}
+
+      - name: Build and Push Worker
+        uses: docker/build-push-action@v6
+        with:
+          context: .
+          file: Dockerfile.Worker
+          push: true
+          tags: |
+            williambr2022/danweb-notificacoes-worker:latest
+            williambr2022/danweb-notificacoes-worker:${{ github.sha }}

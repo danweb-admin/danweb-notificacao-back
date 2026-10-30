@@ -46,6 +46,10 @@ public class AppDbContext : DbContext
 
             entity.HasIndex(x => x.Codigo)
                 .IsUnique();
+
+            entity.Property(x => x.ApiKeyHash)
+                .HasMaxLength(64)
+                .IsRequired();
         });
 
         modelBuilder.Entity<InstanciaEvolution>(entity =>

@@ -12,6 +12,8 @@ public class Aplicacao
 
     public DateTime DataCriacao { get; set; } = DateTime.UtcNow;
 
+    public string ApiKeyHash { get; set; } = string.Empty;
+
     public ICollection<Notificacao> Notificacoes { get; set; }
         = new List<Notificacao>();
 }

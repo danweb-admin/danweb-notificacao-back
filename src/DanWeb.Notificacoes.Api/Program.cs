@@ -24,6 +24,9 @@ builder.Services.AddDbContext<AppDbContext>(options =>
     options.UseSqlServer(connectionString);
 });
 
+builder.Services.AddScoped<
+    DanWeb.Notificacoes.Api.Services.ApiKeyService>();
+
 var app = builder.Build();
 
 // Configure the HTTP request pipeline.
